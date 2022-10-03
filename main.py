@@ -33,12 +33,52 @@ California = (Telco
 City_List = ['Walnut','Diamond Bar','Rowland Heights']
 
 WDR = (Telco
+       .filter(['City','Latitude','Longitude','Total Charges','Churn Reason'])
        .query('City in @City_List')
        .dropna(subset=['Latitude','Churn Reason']) # Dropping NAs in specific columns
        )
 
+WDR[WDR['Total Charges']==WDR['Total Charges'].max()]
 
+# Dense Rank
+WDR_DRank = WDR.copy()
+WDR_DRank['Rank'] = WDR['Total Charges'].rank(method='dense',ascending=False).astype(int)
+WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
 
+#Creating month-year variable, working with datetimes, dates
+Df[‘new_var’] = pandas.to_datetime(Df[‘date_var’], format = ‘%y-%m-%d’).dt.strftime(‘%m-%y’)
+
+# Using a function to classify obs
+
+def EXPENSIVE(x):
+    if x == 0: return 'N/A'
+    elif x <= 200: return 'Substantial'
+    elif x <= 2000: return 'Significant'
+    else: return 'Big Bucks'
+
+WDR_DRank['Expensive'] = WDR_DRank['Total Charges'].apply(EXPENSIVE)
+
+# Create a pivot table with the index as Customer ID, we want the City var categories to be columns,
+# ... and values from the Total Charges column.
+Example_Pivot = WDR.pivot_table(index='CustomerID',columns='City',values='Total Charges')
+#   City        Rowland Heights  Walnut
+#   CustomerID
+#   3606-TWKGI          1364.30     NaN
+#   4317-VTEOA            50.75     NaN
+#   4587-NUKOX              NaN  246.50
+#   5906-CVLHP          2319.80     NaN
+#   8722-NGNBH              NaN  223.45
+
+# Concat
+# Axis = 0 -- Stick the dataframe at the end
+# Same number of columns, twice the obs
+Big_Concat = pandas.concat([California,California],axis=0)
+# Axis = 1 -- Stick the dataframe on the side
+# Twice the columns, same number of obs
+Big_Concat = pandas.concat([California,California],axis=1)
+
+# Pandas Merge
+DataFrame.merge(right_df, how='inner', on=None, left_on=None, right_on=None, suffixes=('_x', '_y'))
 
 # Pulling data from Star Wars API
 import requests
