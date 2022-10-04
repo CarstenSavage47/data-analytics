@@ -80,7 +80,7 @@ Big_Concat = pandas.concat([California,California],axis=1)
 # Pandas Merge
 DataFrame.merge(right_df, how='inner', on=None, left_on=None, right_on=None, suffixes=('_x', '_y'))
 
-# Pulling data from Star Wars API
+# Pulling data from Star Wars API Example
 import requests
 import json
 import ijson
