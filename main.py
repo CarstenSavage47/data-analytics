@@ -3,6 +3,7 @@ import pandas
 import openpyxl
 Telco = pandas.read_excel('/Users/carstenjuliansavage/Desktop/Telco_customer_churn.xlsx')
 
+# General data manipulation example
 (Telco
  .filter(['Churn Reason','City','Count','Tenure Months','Total Charges'])
  .rename(columns={'Churn Reason':"Churn_Reason",'Tenure Months':"Tenure_Months"})
@@ -22,6 +23,7 @@ Telco = pandas.read_excel('/Users/carstenjuliansavage/Desktop/Telco_customer_chu
  .agg({'City': pandas.Series.nunique})
  )
 
+# Example of null values, assign function, sort_values, etc.
 California = (Telco
               .query("State.str.contains('California')", engine="python")
               .sort_values('City',ascending=True)
@@ -30,17 +32,19 @@ California = (Telco
               .assign(Nonsensical=lambda a: (a.Count+a.Latitude)/a.Longitude)
               )
 
+# Creating a list to use later
 City_List = ['Walnut','Diamond Bar','Rowland Heights']
 
 WDR = (Telco
        .filter(['City','Latitude','Longitude','Total Charges','Churn Reason'])
-       .query('City in @City_List')
+       .query('City in @City_List') # Querying in a list
        .dropna(subset=['Latitude','Churn Reason']) # Dropping NAs in specific columns
        )
 
+# Easy way to get top observation for a given column
 WDR[WDR['Total Charges']==WDR['Total Charges'].max()]
 
-# Dense Rank
+# Dense Rank example
 WDR_DRank = WDR.copy()
 WDR_DRank['Rank'] = WDR['Total Charges'].rank(method='dense',ascending=False).astype(int)
 WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
@@ -49,7 +53,6 @@ WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
 Df[‘new_var’] = pandas.to_datetime(Df[‘date_var’], format = ‘%y-%m-%d’).dt.strftime(‘%m-%y’)
 
 # Using a function to classify obs
-
 def EXPENSIVE(x):
     if x == 0: return 'N/A'
     elif x <= 200: return 'Substantial'
@@ -77,7 +80,7 @@ Big_Concat = pandas.concat([California,California],axis=0)
 # Twice the columns, same number of obs
 Big_Concat = pandas.concat([California,California],axis=1)
 
-# Pandas Merge
+# Pandas Merge. Left_on and right_on are useful when the column names for the keys are different but the data is the same.
 DataFrame.merge(right_df, how='inner', on=None, left_on=None, right_on=None, suffixes=('_x', '_y'))
 
 # Pulling data from Star Wars API Example
@@ -85,7 +88,6 @@ import requests
 import json
 import ijson
 from pandas.io.json import json_normalize
-
 response = requests.get("https://swapi.dev/api/people")
 response.json()
 print(response.text)
