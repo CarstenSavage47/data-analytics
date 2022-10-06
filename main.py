@@ -3,7 +3,7 @@ import pandas
 import openpyxl
 Telco = pandas.read_excel('/Users/carstenjuliansavage/Desktop/Telco_customer_churn.xlsx')
 
-# General data manipulation example
+## General data manipulation example
 (Telco
  .filter(['Churn Reason','City','Count','Tenure Months','Total Charges'])
  .rename(columns={'Churn Reason':"Churn_Reason",'Tenure Months':"Tenure_Months"})
