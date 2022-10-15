@@ -113,14 +113,15 @@ Bank_Investments_II['Time_DMY'] = pandas.to_datetime(Bank_Investments_II['Date']
 
 
 
+# Employees and Orders
 
+Employees = pandas.read_csv('/Users/carstenjuliansavage/PycharmProjects/Random_Project/employees.csv')
+Orders = pandas.read_csv('/Users/carstenjuliansavage/PycharmProjects/Random_Project/orders.csv')
 
 # Pandas Merge. Left_on and right_on are useful when the column names for the keys are different but the data is the same.
 
-DataFrame.merge(right_df, how='inner', on=None, left_on=None, right_on=None, suffixes=('_x', '_y'))
-
-
-
+Employee_Orders = Employees.merge(Orders, how='inner', left_on='id', right_on='id'#, suffixes=('_Employee', '_Orders')
+                                  )
 
 
 # Pulling data from Star Wars API Example
