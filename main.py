@@ -1,7 +1,10 @@
 
 import pandas
 import openpyxl
-Telco = pandas.read_excel('/Users/carstenjuliansavage/Desktop/Telco_customer_churn.xlsx')
+import datetime as dt
+from datetime import datetime
+
+Telco = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Project/Telco_customer_churn.xlsx')
 
 ## General data manipulation example
 (Telco
@@ -9,7 +12,7 @@ Telco = pandas.read_excel('/Users/carstenjuliansavage/Desktop/Telco_customer_chu
  .rename(columns={'Churn Reason':"Churn_Reason",'Tenure Months':"Tenure_Months"})
  .dropna()
  .query("Churn_Reason.str.lower().str.contains('better')",engine="python")
- .query("Churn_Reason.str.lower().str.startswith('')", engine="python")
+ .query("Churn_Reason.str.lower().str.startswith('c')", engine="python")
  .query("Churn_Reason.str.lower().str.endswith('r')", engine="python")
  .query("Churn_Reason.str.lower().str.contains('better|competitor')", engine="python") # 'Or' operator
  # .query("Churn_Reason.str.lower().str.contains('better&competitor')", engine="python") # Note, the & operator does not work.
@@ -19,11 +22,12 @@ Telco = pandas.read_excel('/Users/carstenjuliansavage/Desktop/Telco_customer_chu
  .agg({'Count':"sum",'Tenure_Months':"mean",'Total Charges':"sum",'City':pandas.Series.nunique})
  )
 
+# Unique city observations
 (Telco
  .agg({'City': pandas.Series.nunique})
  )
 
-# Example of null values, assign function, sort_values, etc.
+# Example of null values, assign function, sort_values, and assign (R Tidyverse mutate equivalent).
 California = (Telco
               .query("State.str.contains('California')", engine="python")
               .sort_values('City',ascending=True)
@@ -35,6 +39,7 @@ California = (Telco
 # Creating a list to use later
 City_List = ['Walnut','Diamond Bar','Rowland Heights']
 
+# WDR = Walnut, Diamond Bar, Rowland Heights
 WDR = (Telco
        .filter(['City','Latitude','Longitude','Total Charges','Churn Reason'])
        .query('City in @City_List') # Querying in a list
@@ -48,9 +53,6 @@ WDR[WDR['Total Charges']==WDR['Total Charges'].max()]
 WDR_DRank = WDR.copy()
 WDR_DRank['Rank'] = WDR['Total Charges'].rank(method='dense',ascending=False).astype(int)
 WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
-
-#Creating month-year variable, working with datetimes, dates
-Df[‘new_var’] = pandas.to_datetime(Df[‘date_var’], format = ‘%y-%m-%d’).dt.strftime(‘%m-%y’)
 
 # Using a function to classify obs
 def EXPENSIVE(x):
@@ -79,6 +81,14 @@ Big_Concat = pandas.concat([California,California],axis=0)
 # Axis = 1 -- Stick the dataframe on the side
 # Twice the columns, same number of obs
 Big_Concat = pandas.concat([California,California],axis=1)
+
+
+Bank_Investments = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Project/Analytics_mindset_case_studies_Bank_Investment_Portfolios.xlsx')
+
+Bank_Investments_II = Bank_Investments.copy()
+
+#Creating month-year variable, working with datetimes, dates
+Bank_Investments_II['Time_DMY'] = pandas.to_datetime(Bank_Investments_II['Date'], format = '%y-%m-%d').dt.strftime('%d-%m-%y')
 
 # Pandas Merge. Left_on and right_on are useful when the column names for the keys are different but the data is the same.
 DataFrame.merge(right_df, how='inner', on=None, left_on=None, right_on=None, suffixes=('_x', '_y'))
