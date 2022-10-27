@@ -78,9 +78,21 @@ WDR_DRank['Expensive'] = WDR_DRank['Total Charges'].apply(EXPENSIVE)
 
 
 
+
+
+
+
+
 # Working with Functions Across Columns:
+import datetime as dt
 
 Meta_Customer_Revenue = pandas.read_excel('/Users/carstenjuliansavage/Desktop/R Working Directory/Useful Datasets/Meta_Customer_Revenue.xlsx')
+
+Meta_Customer_Revenue = (Meta_Customer_Revenue
+                        .astype({"order_shipped":'datetime64[ns]',"order_date":'datetime64[ns]'})
+                         )
+
+Meta_Customer_Revenue.dtypes
 
 # This function gets the difference between the order_shipped and order_date columns,
 # ...standardizes that to a number of days, and then divides that by 365.25 days/year to get number of years.
@@ -88,6 +100,15 @@ def Time_Length(column):
     return ((column['order_shipped'] - column['order_date']).days)/365.25
 
 Meta_Customer_Revenue['Date_Diff_Years'] = Meta_Customer_Revenue.apply(Time_Length, axis=1)
+
+# Convert dates to strings at the end to get rid of the timestamps. Otherwise, the timestamps will remain.
+
+Meta_Customer_Revenue = (Meta_Customer_Revenue
+                        .astype({"order_shipped":'string',"order_date":'string'})
+                         )
+
+
+
 
 
 
@@ -112,6 +133,9 @@ Big_Concat = pandas.concat([California,California],axis=0)
 # Axis = 1 -- Concat the dataframe on the side
 # Twice the columns, same number of obs
 Big_Concat = pandas.concat([California,California],axis=1)
+
+
+
 
 
 
