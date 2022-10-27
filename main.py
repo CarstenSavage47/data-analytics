@@ -77,6 +77,21 @@ def EXPENSIVE(x):
 WDR_DRank['Expensive'] = WDR_DRank['Total Charges'].apply(EXPENSIVE)
 
 
+
+# Working with Functions Across Columns:
+
+Meta_Customer_Revenue = pandas.read_excel('/Users/carstenjuliansavage/Desktop/R Working Directory/Useful Datasets/Meta_Customer_Revenue.xlsx')
+
+# This function gets the difference between the order_shipped and order_date columns,
+# ...standardizes that to a number of days, and then divides that by 365.25 days/year to get number of years.
+def Time_Length(column):
+    return ((column['order_shipped'] - column['order_date']).days)/365.25
+
+Meta_Customer_Revenue['Date_Diff_Years'] = Meta_Customer_Revenue.apply(Time_Length, axis=1)
+
+
+
+
 # Create a pivot table with the index as Customer ID, we want the City var categories to be columns,
 # ... and values from the Total Charges column.
 Example_Pivot = WDR.pivot_table(index='CustomerID',columns='City',values='Total Charges')
