@@ -1,8 +1,10 @@
-
+import numpy as np
 import pandas
 import openpyxl
 import datetime as dt
 from datetime import datetime
+from fnmatch import fnmatch
+import numpy as np
 
 Telco = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Project/Telco_customer_churn.xlsx')
 
@@ -52,6 +54,17 @@ WDR = (Telco
        .query('City in @City_List') # Querying in a list
        .dropna(subset=['Latitude','Churn Reason']) # Dropping NAs in specific columns
        )
+
+''' Flag bonanza '''
+
+ParkNorth = Telco.copy()
+City_Names = list(['Park','North'])
+searchstr = '|'.join(City_Names)
+#ParkNorth['Flag'] = np.where(ParkNorth[ParkNorth['City'].str.contains(searchstr)],1,0)
+
+To_Flag = (ParkNorth[ParkNorth['City'].str.contains(searchstr)])
+To_Flag['Flag'] = 1
+ParkNorth = To_Flag.combine_first(ParkNorth)
 
 
 # Easy way to get top observation for a given column
