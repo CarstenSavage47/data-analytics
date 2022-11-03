@@ -60,7 +60,7 @@ WDR = (Telco
 ParkNorth = Telco.copy()
 City_Names = list(['Park','North'])
 searchstr = '|'.join(City_Names)
-##ParkNorth['Flag'] = np.where(ParkNorth[ParkNorth['City'].str.contains(searchstr)],1,0)
+#ParkNorth['Flag'] = np.where(ParkNorth[ParkNorth['City'].str.contains(searchstr)],1,0)
 
 To_Flag = (ParkNorth[ParkNorth['City'].str.contains(searchstr)])
 To_Flag['Flag'] = 1
