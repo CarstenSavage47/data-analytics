@@ -60,17 +60,15 @@ WDR = (Telco
 ParkNorth = Telco.copy()
 City_Names = list(['Park','North'])
 searchstr = '|'.join(City_Names)
-#ParkNorth['Flag'] = np.where(ParkNorth[ParkNorth['City'].str.contains(searchstr)],1,0)
-
 To_Flag = (ParkNorth[ParkNorth['City'].str.contains(searchstr)])
 To_Flag['Flag'] = 1
 ParkNorth = To_Flag.combine_first(ParkNorth)
 
 
+
 # Easy way to get top observation for a given column
 
 WDR[WDR['Total Charges']==WDR['Total Charges'].max()]
-
 
 # Dense Rank example
 
@@ -176,4 +174,10 @@ Orders = pandas.read_csv('/Users/carstenjuliansavage/PycharmProjects/Random_Proj
 
 Employee_Orders = Employees.merge(Orders, how='inner', left_on='id', right_on='id'#, suffixes=('_Employee', '_Orders')
                                   )
+'''Lag Equivalent -- Lag by 4'''
+Employee_Orders['Lag'] = Employee_Orders['item_cost'].shift(4)
 
+'''Replace all nan values with inf values'''
+Employee_Orders = Employee_Orders.replace(np.nan,np.inf)
+'''Replace all inf values with nan values'''
+Employee_Orders = Employee_Orders.replace(np.inf,np.nan)
