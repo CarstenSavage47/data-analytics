@@ -149,22 +149,6 @@ Big_Concat = pandas.concat([California,California],axis=1)
 
 
 
-
-
-## Bank Investments
-
-Bank_Investments = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Project/Analytics_mindset_case_studies_Bank_Investment_Portfolios.xlsx')
-
-Bank_Investments_II = Bank_Investments.copy()
-
-#Creating month-year variable, working with datetimes, dates
-
-Bank_Investments_II['Time_DMY'] = pandas.to_datetime(Bank_Investments_II['Date'], format = '%y-%m-%d').dt.strftime('%d-%m-%y')
-Bank_Investments_II['Time_YMD'] = pandas.to_datetime(Bank_Investments_II['Date'], format = '%y-%m-%d').dt.strftime('%y-%m-%d')
-Bank_Investments_II['Time_MDY'] = pandas.to_datetime(Bank_Investments_II['Date'], format = '%y-%m-%d').dt.strftime('%m-%d-%y')
-
-
-
 # Employees and Orders
 
 Employees = pandas.read_csv('/Users/carstenjuliansavage/PycharmProjects/Random_Project/employees.csv')
