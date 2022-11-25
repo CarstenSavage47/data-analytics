@@ -135,7 +135,7 @@ Example_Pivot = WDR.pivot_table(index='CustomerID',columns='City',values='Total 
 #   5906-CVLHP          2319.80     NaN
 #   8722-NGNBH              NaN  223.45
 
-# Concatenations
+## Concatenations
 
 # Axis = 0 -- Concat the dataframe to the end
 # Same number of columns, twice the obs
