@@ -1,11 +1,14 @@
 from gtts import gTTS
 import os
 from pygame import mixer
-Text = "ich habe es fertig gemacht"
-language = 'de'
-output = gTTS(text=Text,lang=language,slow=False)
-output.save('output.mp3')
+Text = "J'ai fini le code"
+language = 'fr'
 
-mixer.init()
-mixer.music.load('/Users/carstenjuliansavage/PycharmProjects/Random_Project/output.mp3')
-mixer.music.play()
+def jouer_son(x):
+    output = gTTS(text=x,lang=language,slow=False)
+    output.save('output.mp3')
+    mixer.init()
+    mixer.music.load('output.mp3')
+    mixer.music.play()
+
+jouer_son(Text)
