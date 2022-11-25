@@ -1,8 +1,8 @@
 from gtts import gTTS
 import os
 from pygame import mixer
-Text = "C'est fini"
-language = 'fr'
+Text = "ich habe es fertig gemacht"
+language = 'de'
 output = gTTS(text=Text,lang=language,slow=False)
 output.save('output.mp3')
 
