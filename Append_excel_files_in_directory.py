@@ -25,3 +25,18 @@ for i in files:
     df['Row_Number'] = df.index+2
     combined_files = combined_files.append(df, ignore_index=True)
 
+
+# Slim down to get only first row from each dataset
+combined_files = (combined_files
+                  .groupby('File_Name')
+                  .first()
+                  )
+
+
+# Get column names for files where data exists for those columns
+NonNARows = (combined_files.stack()
+             .reset_index(level=1)
+             .groupby(level=0,sort=False)
+             ['level_1'].apply(list)
+             )
+
