@@ -22,3 +22,17 @@ D --> F(End)
 E --> F
 F --> A
 ```
+```mermaid
+sequenceDiagram
+    participant  Associate
+    participant Manager
+    participant Managing Director
+    Associate ->> Manager: Present initial research
+    Manager ->> Associate: Provide edits
+    Associate ->> Manager: Provide Updated Draft
+    Associate ->> Managing Director: Provide Updated Draft and Present
+    
+```
+
+
+
