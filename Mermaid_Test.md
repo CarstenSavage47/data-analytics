@@ -4,7 +4,7 @@ flowchart LR
     A --> B
 ```
 
-You can assign text to a rectangle and but also reference that rectangle
+You can assign text to a rectangle and also reference that rectangle
 with just the letter (etc. B[Hello] Displays Hello but you can refer to it with B).
 ```mermaid
 flowchart 
