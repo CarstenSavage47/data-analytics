@@ -5,7 +5,9 @@ flowchart LR
 ```
 
 You can assign text to a rectangle and also reference that rectangle
-with just the letter (etc. B[Hello] Displays Hello but you can refer to it with B).
+with just the letter. For example:  A[Start analysis] --> B[Do The Analysis] where 
+B[Do The Analysis]  Displays "Do The Analysis" but you can refer to it with B).
+
 ```mermaid
 flowchart 
     A[Start analysis] --> B[Do The Analysis]
