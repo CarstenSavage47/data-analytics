@@ -13,7 +13,7 @@ flowchart
     A[Start analysis] --> B[Do The Analysis]
     B --> C[Finish the analysis]
 ```
-Different types of diagrams:
+Complicated Flowchart:
 ```mermaid
 flowchart LR 
 A[Start] --> B
