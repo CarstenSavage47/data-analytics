@@ -22,8 +22,10 @@ D --> F(End)
 E --> F
 F --> A
 ```
+Sequence Diagram
 ```mermaid
 sequenceDiagram
+    autonumber
     participant  Associate
     participant Manager
     participant Managing Director
@@ -31,7 +33,6 @@ sequenceDiagram
     Manager ->> Associate: Provide edits
     Associate ->> Manager: Provide Updated Draft
     Associate ->> Managing Director: Provide Updated Draft and Present
-    
 ```
 
 
