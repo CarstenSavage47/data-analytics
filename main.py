@@ -112,7 +112,7 @@ def Time_Length(column):
 
 Meta_Customer_Revenue['Date_Diff_Years'] = Meta_Customer_Revenue.apply(Time_Length, axis=1)
 
-# Convert dates to strings at the end to get rid of the timestamps. Otherwise, the timestamps will remain.
+## Convert dates to strings at the end to get rid of the timestamps. Otherwise, the timestamps will remain.
 
 Meta_Customer_Revenue = (Meta_Customer_Revenue
                         .astype({"order_shipped":'string',"order_date":'string'})
