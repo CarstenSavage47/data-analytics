@@ -7,8 +7,9 @@
 import torch
 
 # Define the input data
-x = torch.tensor([[1], [2], [3], [4], [5]])
-y = torch.tensor([[1], [2], [1.3], [3.75], [2.25]])
+# Set the data type of both tensors to float32
+x = torch.tensor([[1], [2], [3], [4], [5]], dtype=torch.float32)
+y = torch.tensor([[1], [2], [1.3], [3.75], [2.25]], dtype=torch.float32)
 
 # Define the model
 model = torch.nn.Linear(1, 1)
@@ -33,6 +34,6 @@ for i in range(1000):
     optimizer.step()
 
 # Test the model
-x_test = torch.tensor([[6]])
+x_test = torch.tensor([[6]], dtype=torch.float32)
 y_test = model(x_test)
 print(f'Predicted value for test input: {y_test.item():.4f}')
