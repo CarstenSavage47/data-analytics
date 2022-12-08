@@ -36,4 +36,4 @@ for i in range(1000):
 # Test the model
 x_test = torch.tensor([[6]], dtype=torch.float32)
 y_test = model(x_test)
-print(f'Predicted value for test input: {y_test.item():.4f}')
+print(f'Predicted value for test input of {x_test.item()}: {y_test.item():.4f}')
