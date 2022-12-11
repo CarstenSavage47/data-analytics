@@ -2,7 +2,7 @@
 # and train it on a small dataset of five input-output pairs. We use mean squared error (MSE) loss and
 # stochastic gradient descent (SGD) to optimize the model's weights and improve its performance on the training data.
 # After training for 1000 epochs, the model is able to make a prediction on a new test input, x_test = 6, and output a
-# predicted value of y_test = 2.1428.
+## predicted value of y_test = 2.1428.
 
 import torch
 
