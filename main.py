@@ -18,7 +18,6 @@ Telco = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Pro
  .query("Churn_Reason.str.lower().str.startswith('c')", engine="python")
  .query("Churn_Reason.str.lower().str.endswith('r')", engine="python")
  .query("Churn_Reason.str.lower().str.contains('better|competitor')", engine="python") # 'Or' operator
- # .query("Churn_Reason.str.lower().str.contains('better&competitor')", engine="python") # Note, the & operator does not work.
  .query('City not in ["Columbus"]')
  .query('City in ["Los Angeles","San Francisco"]')
  .groupby('City')
@@ -112,11 +111,7 @@ def Time_Length(column):
 
 Meta_Customer_Revenue['Date_Diff_Years'] = Meta_Customer_Revenue.apply(Time_Length, axis=1)
 
-## Convert dates to strings at the end to get rid of the timestamps. Otherwise, the timestamps will remain.
 
-Meta_Customer_Revenue = (Meta_Customer_Revenue
-                        .astype({"order_shipped":'string',"order_date":'string'})
-                         )
 
 
 
