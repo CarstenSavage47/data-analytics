@@ -94,6 +94,7 @@ WDR_DRank['Expensive'] = WDR_DRank['Total Charges'].apply(EXPENSIVE)
 
 
 # Working with Functions Across Columns:
+
 import datetime as dt
 
 Meta_Customer_Revenue = pandas.read_excel('/Users/carstenjuliansavage/Desktop/R Working Directory/Useful Datasets/Meta_Customer_Revenue.xlsx')
@@ -111,7 +112,9 @@ def Time_Length(column):
 
 Meta_Customer_Revenue['Date_Diff_Years'] = Meta_Customer_Revenue.apply(Time_Length, axis=1)
 
-
+Meta_Customer_Revenue['Day'] = Meta_Customer_Revenue['order_date'].dt.day
+Meta_Customer_Revenue['Month'] = Meta_Customer_Revenue['order_date'].dt.month
+Meta_Customer_Revenue['Year'] = Meta_Customer_Revenue['order_date'].dt.year
 
 
 
