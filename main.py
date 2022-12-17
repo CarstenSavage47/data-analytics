@@ -76,7 +76,7 @@ WDR_DRank['Rank'] = WDR['Total Charges'].rank(method='dense',ascending=False).as
 WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
 
 
-# Using a function to classify obs
+## Using a function to classify obs
 
 def EXPENSIVE(x):
     if x == 0: return 'N/A'
