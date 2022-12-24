@@ -125,15 +125,6 @@ Meta_Customer_Revenue['Year'] = Meta_Customer_Revenue['order_date'].dt.year
 # Create a pivot table with the index as Customer ID, we want the City var categories to be columns,
 # ... and values from the Total Charges column.
 Example_Pivot = WDR.pivot_table(index='CustomerID',columns='City',values='Total Charges')
-#   City        Rowland Heights  Walnut
-#   CustomerID
-#   3606-TWKGI          1364.30     NaN
-#   4317-VTEOA            50.75     NaN
-#   4587-NUKOX              NaN  246.50
-#   5906-CVLHP          2319.80     NaN
-#   8722-NGNBH              NaN  223.45
-
-## Concatenations
 
 # Axis = 0 -- Concat the dataframe to the end
 # Same number of columns, twice the obs
