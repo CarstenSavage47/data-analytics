@@ -71,17 +71,22 @@ WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
 
 
 ## Using a function to classify obs
-def EXPENSIVE(x):
+def expensive(x):
     if x == 0: return 'N/A'
     elif x <= 200: return 'Substantial'
     elif x <= 2000: return 'Significant'
     else: return 'Big Bucks'
 
-WDR_DRank['Expensive'] = WDR_DRank['Total Charges'].apply(EXPENSIVE)
+WDR_DRank['Expensive'] = WDR_DRank['Total Charges'].apply(expensive)
 
 
+'''Function using multiple columns'''
+def churn_calc(column):
+    if column['Churn Score'] > 0:
+        return(column['Churn Value']/column['Churn Score'])
+    else: return 0
 
-
+Telco['churn_calc'] = Telco.apply(churn_calc,axis=1)
 
 
 
