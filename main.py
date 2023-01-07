@@ -26,14 +26,12 @@ Telco = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Pro
 
 
 # Unique city observations
-
 (Telco
  .agg({'City': pandas.Series.nunique})
  )
 
 
 # Example of null values, assign function, sort_values, and assign (R Tidyverse mutate equivalent).
-
 California = (Telco
               .query("State.str.contains('California')", engine="python")
               .sort_values('City',ascending=True)
@@ -43,19 +41,17 @@ California = (Telco
               )
 
 # Creating a list to use later
-
 City_List = ['Walnut','Diamond Bar','Rowland Heights']
 
 # WDR = Walnut, Diamond Bar, Rowland Heights
-
 WDR = (Telco
        .filter(['City','Latitude','Longitude','Total Charges','Churn Reason'])
        .query('City in @City_List') # Querying in a list
        .dropna(subset=['Latitude','Churn Reason']) # Dropping NAs in specific columns
        )
 
-''' Flag bonanza '''
 
+''' Flag bonanza '''
 ParkNorth = Telco.copy()
 City_Names = list(['Park','North'])
 searchstr = '|'.join(City_Names)
@@ -66,18 +62,15 @@ ParkNorth = To_Flag.combine_first(ParkNorth)
 
 
 # Easy way to get top observation for a given column
-
 WDR[WDR['Total Charges']==WDR['Total Charges'].max()]
 
 # Dense Rank example
-
 WDR_DRank = WDR.copy()
 WDR_DRank['Rank'] = WDR['Total Charges'].rank(method='dense',ascending=False).astype(int)
 WDR_DRank = WDR_DRank.sort_values(by='Rank',ascending=True)
 
 
 ## Using a function to classify obs
-
 def EXPENSIVE(x):
     if x == 0: return 'N/A'
     elif x <= 200: return 'Substantial'
@@ -154,3 +147,5 @@ Employee_Orders['Lag'] = Employee_Orders['item_cost'].shift(4)
 Employee_Orders = Employee_Orders.replace(np.nan,np.inf)
 '''Replace all inf values with nan values'''
 Employee_Orders = Employee_Orders.replace(np.inf,np.nan)
+'''Replace string within variable/column obs.'''
+Employee_Orders['item'] = Employee_Orders['item'].apply(lambda x:str(x).replace("roll","ROLL"))
