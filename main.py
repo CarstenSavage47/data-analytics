@@ -59,7 +59,7 @@ To_Flag = (ParkNorth[ParkNorth['City'].str.contains(searchstr)])
 To_Flag['Flag'] = 1
 ParkNorth = To_Flag.combine_first(ParkNorth)
 
-#
+
 
 # Easy way to get top observation for a given column
 WDR[WDR['Total Charges']==WDR['Total Charges'].max()]
