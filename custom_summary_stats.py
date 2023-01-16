@@ -3,7 +3,7 @@
 import pandas
 
 Telco = pandas.read_excel('/Users/carstenjuliansavage/PycharmProjects/Random_Project/Telco_customer_churn.xlsx')
-
+#
 def percentile(n):
     def percentile_(x):
         return x.quantile(n)
