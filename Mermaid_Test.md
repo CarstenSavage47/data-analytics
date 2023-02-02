@@ -1,7 +1,7 @@
 Flow Chart Left to Right
 ```mermaid
 flowchart LR 
-    A --> B
+    A --> B --> C
 ```
 
 You can assign text to a rectangle and also reference that rectangle
