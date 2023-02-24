@@ -88,8 +88,12 @@ def churn_calc(column):
 
 Telco['churn_calc'] = Telco.apply(churn_calc,axis=1)
 
+def churn_calc(df):
+    new_df = df.copy()
+    new_df['churn_calc'] = new_df.apply(lambda x: x['Churn Value']/x['Churn Score'], axis=1)
+    return new_df
 
-
+churn_calc(Telco)
 
 # Working with Functions Across Columns:
 
