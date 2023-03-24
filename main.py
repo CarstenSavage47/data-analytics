@@ -10,7 +10,7 @@ Telco = pandas.read_excel(
     "/Users/carstenjuliansavage/PycharmProjects/Random_Project/Telco_customer_churn.xlsx"
 )
 
-
+#3 yguguguyguygu
 ## General data manipulation example
 (
     Telco.filter(["Churn Reason", "City", "Count", "Tenure Months", "Total Charges"])
