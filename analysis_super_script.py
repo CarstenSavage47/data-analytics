@@ -157,9 +157,11 @@ def save_xls(list_dfs, xls_path, list_of_column_names):
 
 def get_valid_excel_column_names(list_of_col_names):
     valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
-    list_of_col_names = ["".join(c for c in col if c in valid_chars) for col in list_of_col_names]
-    invalid_chars = r'[\[\]:/\\?\*]'
-    list_of_col_names = [re.sub(invalid_chars, '', col) for col in list_of_col_names]
+    list_of_col_names = [
+        "".join(c for c in col if c in valid_chars) for col in list_of_col_names
+    ]
+    invalid_chars = r"[\[\]:/\\?\*]"
+    list_of_col_names = [re.sub(invalid_chars, "", col) for col in list_of_col_names]
     list_of_col_names = [col[:30].strip() for col in list_of_col_names]
     return list_of_col_names
 
@@ -174,12 +176,11 @@ if __name__ == "__main__":
     column_names_list = get_valid_excel_column_names(list(master_dataframe.columns))
 
     list_of_all_frequency_table_sheets = get_frequency_table_sheets(
-        dataset=master_dataframe,
-        column_name_list=column_names_list
+        dataset=master_dataframe, column_name_list=column_names_list
     )
     save_xls(
         list_dfs=list_of_all_frequency_table_sheets,
         xls_path=excel_analysis_output_path,
-        list_of_column_names=column_names_list
+        list_of_column_names=column_names_list,
     )
     logger.info("Done.")
