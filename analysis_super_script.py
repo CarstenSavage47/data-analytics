@@ -113,7 +113,7 @@ def get_column_names(combined_files):
 
     non_na_rows["level_1"] = list(map(set, non_na_rows["level_1"]))
 
-    non_na_rows = non_na_rows.transpose()
+    #non_na_rows = non_na_rows.transpose()
 
     return non_na_rows
 
