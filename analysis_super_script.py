@@ -144,10 +144,26 @@ def get_frequency_table_sheets(dataset, column_name_list):
 
 def save_frequency_tables_xls(list_dfs, xls_path, list_of_column_names):
     logger.info("Creating analysis Excel file")
+
+    master_summary_stats_by_file = (
+        master_dataframe.groupby(["File_Name"])
+        .describe(include="all", datetime_is_numeric=True)
+        .transpose()
+    )
+    master_summary_stats_all = master_dataframe.describe(
+        include="all", datetime_is_numeric=True
+    ).transpose()
     with ExcelWriter(xls_path) as writer:
-        non_na_rows_all.to_excel(
+        master_summary_stats_all.to_excel(
             writer,
-            sheet_name="non_na_rows_all",
+            sheet_name="summary_stats",
+            index=True,
+            header=True,
+            freeze_panes=(1, 0),
+        )
+        master_summary_stats_by_file.to_excel(
+            writer,
+            sheet_name="summary_stats_byfile",
             index=True,
             header=True,
             freeze_panes=(1, 0),
@@ -155,6 +171,13 @@ def save_frequency_tables_xls(list_dfs, xls_path, list_of_column_names):
         summary_of_master_data.to_excel(
             writer,
             sheet_name="summary_of_master_data",
+            index=True,
+            header=True,
+            freeze_panes=(1, 0),
+        )
+        non_na_rows_all.to_excel(
+            writer,
+            sheet_name="non_na_rows_all",
             index=True,
             header=True,
             freeze_panes=(1, 0),
