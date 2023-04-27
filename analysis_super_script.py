@@ -2,6 +2,8 @@ import pandas
 from pandas import ExcelWriter
 import os
 import glob
+import string
+import re
 import openpyxl
 import pickle
 import numpy as np
@@ -15,9 +17,11 @@ pandas.set_option("display.width", None)
 pandas.set_option("display.max_colwidth", None)
 
 
-directory_of_interest = ""
+directory_of_interest = (
+    "/Users/carstenjuliansavage/Desktop/R Working Directory/Real Estate Stock Data"
+)
 
-excel_analysis_output_path = ""
+excel_analysis_output_path = "/Users/carstenjuliansavage/Desktop/R Working Directory/Real Estate Stock Data/Analysis.xlsx"
 
 
 def concat_all_data(directory):
@@ -36,15 +40,21 @@ def concat_all_data(directory):
     for each_file in files:
         if "xlsx" in each_file:
             df = pandas.read_excel(each_file, engine="openpyxl")
+            df["File_Name"] = each_file
+            df["Row_Number"] = df.index + 2
+            list_of_dfs.append(df)
         elif "xls" in each_file:
             df = pandas.read_excel(each_file)
+            df["File_Name"] = each_file
+            df["Row_Number"] = df.index + 2
+            list_of_dfs.append(df)
         elif "csv" in each_file:
             df = pandas.read_csv(each_file)
+            df["File_Name"] = each_file
+            df["Row_Number"] = df.index + 2
+            list_of_dfs.append(df)
         else:
-            raise Exception("File not supported")
-        df["File_Name"] = each_file
-        df["Row_Number"] = df.index + 2
-        list_of_dfs.append(df)
+            pass
 
     combined_files = pandas.concat(list_of_dfs, ignore_index=True)
 
@@ -132,30 +142,44 @@ def get_frequency_table_sheets(dataset, column_name_list):
     return all_frequency_table_sheets_list
 
 
-def save_xls(list_dfs, xls_path):
+def save_xls(list_dfs, xls_path, list_of_column_names):
     logger.info("Creating analysis Excel file")
     with ExcelWriter(xls_path) as writer:
-        for df in list_dfs:
-            sheet_name = str(df.name)
+        for df, column_name in zip(list_dfs, list_of_column_names):
             df.to_excel(
                 writer,
-                sheet_name=sheet_name,
+                sheet_name=column_name,
                 index=True,
                 header=True,
                 freeze_panes=(1, 0),
             )
 
 
+def get_valid_excel_column_names(list_of_col_names):
+    valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+    list_of_col_names = ["".join(c for c in col if c in valid_chars) for col in list_of_col_names]
+    invalid_chars = r'[\[\]:/\\?\*]'
+    list_of_col_names = [re.sub(invalid_chars, '', col) for col in list_of_col_names]
+    list_of_col_names = [col[:30].strip() for col in list_of_col_names]
+    return list_of_col_names
+
+
 if __name__ == "__main__":
     master_dataframe = concat_all_data(directory_of_interest)
+    list_of_columns_in_df = master_dataframe.columns
     non_na_rows_all = get_column_names(master_dataframe)
     summary_of_master_data = create_summary_of_data(master_dataframe)
     list_of_frequency_dfs = get_frequency_table(master_dataframe)
-    column_names_list = list(master_dataframe.columns)
+
+    column_names_list = get_valid_excel_column_names(list(master_dataframe.columns))
+
     list_of_all_frequency_table_sheets = get_frequency_table_sheets(
-        dataset=master_dataframe, column_name_list=column_names_list
+        dataset=master_dataframe,
+        column_name_list=column_names_list
     )
     save_xls(
-        list_dfs=list_of_all_frequency_table_sheets, xls_path=excel_analysis_output_path
+        list_dfs=list_of_all_frequency_table_sheets,
+        xls_path=excel_analysis_output_path,
+        list_of_column_names=column_names_list
     )
     logger.info("Done.")
