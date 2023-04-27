@@ -144,9 +144,23 @@ def get_frequency_table_sheets(dataset, column_name_list):
     return all_frequency_table_sheets_list
 
 
-def save_xls(list_dfs, xls_path, list_of_column_names):
+def save_frequency_tables_xls(list_dfs, xls_path, list_of_column_names):
     logger.info("Creating analysis Excel file")
     with ExcelWriter(xls_path) as writer:
+        non_na_rows_all.to_excel(
+            writer,
+            sheet_name="non_na_rows_all",
+            index=True,
+            header=True,
+            freeze_panes=(1, 0),
+        )
+        summary_of_master_data.to_excel(
+            writer,
+            sheet_name="summary_of_master_data",
+            index=True,
+            header=True,
+            freeze_panes=(1, 0),
+        )
         for df, column_name in zip(list_dfs, list_of_column_names):
             df.to_excel(
                 writer,
@@ -155,6 +169,8 @@ def save_xls(list_dfs, xls_path, list_of_column_names):
                 header=True,
                 freeze_panes=(1, 0),
             )
+
+    return list_of_column_names
 
 
 def get_valid_excel_column_names(list_of_col_names):
@@ -173,6 +189,7 @@ if __name__ == "__main__":
     list_of_columns_in_df = master_dataframe.columns
     non_na_rows_all = get_column_names(master_dataframe)
     summary_of_master_data = create_summary_of_data(master_dataframe)
+
     list_of_frequency_dfs = get_frequency_table(master_dataframe)
 
     column_names_list = get_valid_excel_column_names(list(master_dataframe.columns))
@@ -180,9 +197,10 @@ if __name__ == "__main__":
     list_of_all_frequency_table_sheets = get_frequency_table_sheets(
         dataset=master_dataframe, column_name_list=column_names_list
     )
-    save_xls(
+    save_frequency_tables_xls(
         list_dfs=list_of_all_frequency_table_sheets,
         xls_path=excel_analysis_output_path,
         list_of_column_names=column_names_list,
     )
+
     logger.info("Done.")
