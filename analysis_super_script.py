@@ -18,10 +18,12 @@ pandas.set_option("display.max_colwidth", None)
 
 
 directory_of_interest = (
-    "/Users/carstenjuliansavage/Desktop/R Working Directory/Real Estate Stock Data"
+    "/Users/carstenjuliansavage/Desktop/R Working Directory/Accounting"
 )
 
-excel_analysis_output_path = "/Users/carstenjuliansavage/Desktop/R Working Directory/Real Estate Stock Data/Analysis.xlsx"
+analysis_file_name = "hello"
+
+excel_analysis_output_path = f"{directory_of_interest}/{analysis_file_name}.xlsx"
 
 
 def concat_all_data(directory):
