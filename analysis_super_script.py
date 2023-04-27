@@ -156,28 +156,36 @@ def save_frequency_tables_xls(list_dfs, xls_path, list_of_column_names):
     with ExcelWriter(xls_path) as writer:
         master_summary_stats_all.to_excel(
             writer,
-            sheet_name="summary_stats",
+            sheet_name="Summary Stats CombinedFile",
             index=True,
             header=True,
             freeze_panes=(1, 0),
         )
         master_summary_stats_by_file.to_excel(
             writer,
-            sheet_name="summary_stats_byfile",
+            sheet_name="Summary Stats ByFile",
             index=True,
             header=True,
             freeze_panes=(1, 0),
         )
         summary_of_master_data.to_excel(
             writer,
-            sheet_name="summary_of_master_data",
+            sheet_name="Summary Master Data",
             index=True,
             header=True,
             freeze_panes=(1, 0),
         )
         non_na_rows_all.to_excel(
             writer,
-            sheet_name="non_na_rows_all",
+            sheet_name="Column Names ByFile",
+            index=True,
+            header=True,
+            freeze_panes=(1, 0),
+        )
+        sheet_separator = pandas.DataFrame()
+        sheet_separator.to_excel(
+            writer,
+            sheet_name="Frequency Tables ByColumn>>",
             index=True,
             header=True,
             freeze_panes=(1, 0),
