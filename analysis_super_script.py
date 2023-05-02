@@ -18,7 +18,7 @@ pandas.set_option("display.max_colwidth", None)
 
 
 directory_of_interest = (
-    "/Users/carstenjuliansavage/Desktop/R Working Directory/Accounting"
+    "/Users/carstenjuliansavage/PycharmProjects/Random_Project/Data Files"
 )
 
 analysis_file_name = "hello"
@@ -68,7 +68,7 @@ def concat_all_data(directory):
 def create_summary_of_data(data_for_summary):
     logger.info("Building non-null summary of data")
 
-    counts_by_file = pandas.DataFrame(data_for_summary.groupby("File_Name").count())
+    counts_by_file = pandas.DataFrame(data_for_summary.groupby("file_name").count())
     counts_by_file = counts_by_file.transpose()
 
     counts_by_file = counts_by_file.astype("int")
@@ -85,7 +85,7 @@ def create_summary_of_data(data_for_summary):
 
     counts_master_and_all.columns.values[1] = "Master_Dataset_Non_Null"
 
-    counts_master_and_all.drop("File_Name", axis=0, inplace=True)
+    counts_master_and_all.drop("file_name", axis=0, inplace=True)
 
     return counts_master_and_all
 
@@ -96,9 +96,9 @@ def get_column_names(combined_files):
     # Get first 20 rows from each source doc, shuffle obs. to increase probability of obs. in the sample.
     combined_files_random_sample = (
         combined_files.sample(frac=1, random_state=47)
-        .groupby(["File_Name"])
+        .groupby(["file_name"])
         .head(20)
-        .set_index(["File_Name"])
+        .set_index(["file_name"])
     )
 
     # Get column names for files where data exists for those columns
@@ -125,7 +125,7 @@ def get_frequency_table(dataset):
     return list_of_dfs
 
 
-def get_frequency_table_sheets(dataset, column_name_list):
+def get_frequency_table_sheets(dataset):
     logger.info("Creating list of dataframes")
     all_frequency_table_sheets_list = []
     for i in range(len(dataset.columns)):
@@ -146,7 +146,7 @@ def save_frequency_tables_xls(list_dfs, xls_path, list_of_column_names):
     logger.info("Creating analysis Excel file")
 
     master_summary_stats_by_file = (
-        master_dataframe.groupby(["File_Name"])
+        master_dataframe.groupby(["file_name"])
         .describe(include="all", datetime_is_numeric=True)
         .transpose()
     )
@@ -213,8 +213,24 @@ def get_valid_excel_column_names(list_of_col_names):
     return list_of_col_names
 
 
+class ReNamer:
+    def __init__(self):
+        self.d = dict()
+
+    def __call__(self, x):
+        if x not in self.d:
+            self.d[x] = 0
+            return x
+        else:
+            self.d[x] += 1
+            return "%s_%d" % (x, self.d[x])
+
+
 if __name__ == "__main__":
     master_dataframe = concat_all_data(directory_of_interest)
+    master_dataframe.columns = [x.lower() for x in master_dataframe.columns]
+    master_dataframe = master_dataframe.rename(columns=ReNamer())
+    logger.info(master_dataframe.columns)
     list_of_columns_in_df = master_dataframe.columns
     non_na_rows_all = get_column_names(master_dataframe)
     summary_of_master_data = create_summary_of_data(master_dataframe)
@@ -224,12 +240,11 @@ if __name__ == "__main__":
     column_names_list = get_valid_excel_column_names(list(master_dataframe.columns))
 
     list_of_all_frequency_table_sheets = get_frequency_table_sheets(
-        dataset=master_dataframe, column_name_list=column_names_list
+        dataset=master_dataframe
     )
     save_frequency_tables_xls(
         list_dfs=list_of_all_frequency_table_sheets,
         xls_path=excel_analysis_output_path,
         list_of_column_names=column_names_list,
     )
-
     logger.info("Done.")
